@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:peliculas_bitbox/pages/pelicula_detalle.dart';
 import 'package:peliculas_bitbox/providers/peliculas_providers.dart';
 
+
 import 'models/pelicula_modelo.dart';
 
 void main() => runApp(MyApp());
@@ -82,6 +83,9 @@ class HomePage extends StatelessWidget {
                     title: Text( pelicula.title ),
                     trailing: IconButton(
                       icon: Icon(Icons.favorite),
+                      onPressed: () {
+                        _mostrarAlert(context, pelicula);
+                      },
                     ),
                     onTap: (){
                    //   pelicula.uniqueId = '';
@@ -98,6 +102,46 @@ class HomePage extends StatelessWidget {
           }
         }
 
+    );
+  }
+
+  void _mostrarAlert(BuildContext context, Pelicula pelicula) {
+    showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      // false = user must tap button, true = tap outside dialog
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
+         // title: Text('title'),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('¿Estas seguro que deseas añadir \"${pelicula.title}\" a la lista de favoritos?'),
+              FadeInImage(
+                  placeholder: AssetImage("assets/loading-48.gif"),
+                  image: NetworkImage(pelicula.getPosterImg()))
+
+
+
+
+            ],
+          ),
+
+          actions: <Widget>[
+            FlatButton(
+              child: Text('ok'),
+              onPressed: () {
+                Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+              },
+            ),
+            FlatButton(
+                child: Text('Cancelar'),
+                onPressed: () => Navigator.of(dialogContext).pop() // Dismiss alert dialog
+            )
+          ],
+        );
+      },
     );
   }
 
