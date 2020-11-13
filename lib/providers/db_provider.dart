@@ -35,7 +35,7 @@ Future<Database> get database async {
     },
     onCreate: (Database db, int version) async {
       await db.execute('CREATE TABLE Pelicula ('
-      'id TEXT PRIMARY KEY'
+      ' id TEXT PRIMARY KEY'
       ');'
       );
     }
@@ -48,10 +48,7 @@ Future<Database> get database async {
 nuevoPeliculaRaw(Pelicula pelicula) async {
   final db = await database;
 
-  final res = await db.rawInsert(
-    "INSERT INTO Pelicula(id) "
-    "VALUES ('${pelicula.id}');"
-  );
+  final res = await db.rawInsert("INSERT INTO Pelicula(id) VALUES ('${pelicula.id}');");
 
   print("insertado!!!!!!!!!!!!!!!!!!!!!!!!!");
   return res;
@@ -75,7 +72,9 @@ Future<bool> getPeliculaId(int id) async {
 
     final respuesta = await db.query('Pelicula');
 
+
     List<Pelicula> list = respuesta.isNotEmpty ? respuesta.map( (peli) => Pelicula.fromJsonMap(peli)).toList() : [];
+
 
     return list;
 

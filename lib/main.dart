@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:peliculas_bitbox/pages/favorites.dart';
 import 'package:peliculas_bitbox/pages/pelicula_detalle.dart';
+import 'package:peliculas_bitbox/pages/vistas.dart';
 import 'package:peliculas_bitbox/providers/db_provider.dart';
 import 'package:peliculas_bitbox/providers/db_provider.dart';
 import 'package:peliculas_bitbox/providers/peliculas_providers.dart';
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
       routes: <String, WidgetBuilder> {
        // "/" : (context) => HomePage(),
         "detalle" : (context) => PeliculaDetalle(),
-        "favorita" : (context) => Favourites()
+        "favorita" : (context) => Favourites(),
+        "vista" : (context) => VistasPage()
       },
     );
   }
@@ -49,6 +51,12 @@ class HomePage extends StatelessWidget {
             icon: Icon(Icons.favorite),
             onPressed: () {
               Navigator.pushNamed(context, 'favorita',);
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.remove_red_eye_sharp),
+            onPressed: () {
+              Navigator.pushNamed(context, 'vista',);
             },
           )
         ],
@@ -98,7 +106,7 @@ class HomePage extends StatelessWidget {
                         leading: Hero(
                           tag: pelicula.id,
                           child: ClipRRect(
-                            borderRadius: BorderRadius.circular(200.0),
+                          //  borderRadius: BorderRadius.circular(20.0),
                             child: FadeInImage(
                               image: NetworkImage( pelicula.getPosterImg() ),
                               placeholder: AssetImage('assets/loading-48.gif'),
@@ -155,10 +163,6 @@ class HomePage extends StatelessWidget {
               FadeInImage(
                   placeholder: AssetImage("assets/loading-48.gif"),
                   image: NetworkImage(pelicula.getPosterImg()))
-
-
-
-
             ],
           ),
 

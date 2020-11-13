@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:peliculas_bitbox/models/pelicula_modelo.dart';
 
 class PeliculaDetalle extends StatelessWidget {
@@ -12,12 +13,20 @@ class PeliculaDetalle extends StatelessWidget {
           _crearAppbar(pelicula),
           SliverList(
             delegate: SliverChildListDelegate([
-              SizedBox(height: 10.0),
+            //  SizedBox(height: 1.0),
               Container(
                   padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-                  child: Text(
-                    pelicula.overview,
-                    textAlign: TextAlign.justify,
+                  child: Column(
+                    children: [
+                      Text("Estreno: ${pelicula.releaseDate}"),
+                      _crearRatingBar(pelicula),
+                //      Text(pelicula.voteAverage.toString()),
+                      SizedBox(height: 15.0),
+                      Text(
+                        pelicula.overview,
+                        textAlign: TextAlign.justify,
+                      ),
+                    ],
                   )
               ),
             ]),
@@ -57,4 +66,21 @@ class PeliculaDetalle extends StatelessWidget {
       ),
     );
   }
+
+  Widget _crearRatingBar (Pelicula pelicula) {
+    return RatingBar.builder(
+      initialRating: pelicula.voteAverage/2,
+      minRating: 0,
+      direction: Axis.horizontal,
+      allowHalfRating: true,
+      itemCount: 5,
+      itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+      itemBuilder: (context, _) => Icon(
+        Icons.star,
+        color: Colors.amber,
+        size: 1,
+      ),
+    );
+  }
+
 }
