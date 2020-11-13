@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:peliculas_bitbox/models/pelicula_modelo.dart';
 import 'dart:convert';
@@ -8,9 +10,24 @@ class PeliculasProvider{
   final String _url = 'api.themoviedb.org';
   final String _language = 'es-ES';
 
-  int _popularesPages = 1;
+  int _popularesPages = 0;
+
+  bool _cargando  = false;
 
   List<Pelicula> _populares = new List();
+
+  final _popularesStreamController = StreamController<List<Pelicula>>.broadcast();
+
+// Para poder insertar informacion al string
+  Function(List<Pelicula>) get popularesSink => _popularesStreamController.sink.add;
+// Para escuchar la informacion
+  Stream<List<Pelicula>> get popularesStream => _popularesStreamController.stream;
+
+
+  void disposeStreams() {
+    _popularesStreamController?.close();
+  }
+
 
   Future<List<Pelicula>> getPopulares() async {
 

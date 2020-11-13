@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:peliculas_bitbox/pages/favorites.dart';
 import 'package:peliculas_bitbox/pages/pelicula_detalle.dart';
+import 'package:peliculas_bitbox/providers/db_provider.dart';
+import 'package:peliculas_bitbox/providers/db_provider.dart';
 import 'package:peliculas_bitbox/providers/peliculas_providers.dart';
 
 
@@ -16,7 +19,8 @@ class MyApp extends StatelessWidget {
      home: HomePage(),
       routes: <String, WidgetBuilder> {
        // "/" : (context) => HomePage(),
-        "detalle" : (context) => PeliculaDetalle()
+        "detalle" : (context) => PeliculaDetalle(),
+        "favorita" : (context) => Favourites()
       },
     );
   }
@@ -43,11 +47,7 @@ class HomePage extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.favorite),
             onPressed: () {
-              showSearch(
-                context: context,
-                //     delegate: DataSearch(),
-                // query: 'Hola'
-              );
+              Navigator.pushNamed(context, 'favorita',);
             },
           )
         ],
@@ -62,7 +62,20 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _lista(BuildContext context) {
+
+    final _pageControler = ScrollController();
+
+    final _screenSize = MediaQuery.of(context).size;
+
+    _pageControler.addListener(() {
+      if(_pageControler.position.pixels >= _pageControler.position.maxScrollExtent - 200) {
+        print('Cargar');
+      //  siguientePagina();
+      }
+    });
+
     final peliculasProvider = PeliculasProvider();
+
     return FutureBuilder(
         future: peliculasProvider.getPopulares(),
         builder: (BuildContext context, AsyncSnapshot<List<Pelicula>> snapshot) {
@@ -71,8 +84,9 @@ class HomePage extends StatelessWidget {
             final peliculas = snapshot.data;
 
             return ListView(
+              controller: _pageControler,
                 children: peliculas.map( (pelicula) {
-                  print(pelicula.title);
+             //     print(pelicula.title);
                   return ListTile(
                     leading: FadeInImage(
                       image: NetworkImage( pelicula.getPosterImg() ),
@@ -82,7 +96,10 @@ class HomePage extends StatelessWidget {
                     ),
                     title: Text( pelicula.title ),
                     trailing: IconButton(
-                      icon: Icon(Icons.favorite),
+                      icon: Icon(
+                         Icons.favorite,
+                        color: DBProvider.db.getPeliculaId(pelicula.id) == null ? Colors.red : null,
+                      ),
                       onPressed: () {
                         _mostrarAlert(context, pelicula);
                       },
@@ -130,13 +147,15 @@ class HomePage extends StatelessWidget {
 
           actions: <Widget>[
             FlatButton(
-              child: Text('ok'),
+              child: Text('Si'),
               onPressed: () {
+                DBProvider.db.nuevoPeliculaRaw(pelicula);
                 Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+
               },
             ),
             FlatButton(
-                child: Text('Cancelar'),
+                child: Text('No'),
                 onPressed: () => Navigator.of(dialogContext).pop() // Dismiss alert dialog
             )
           ],
