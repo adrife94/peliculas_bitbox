@@ -29,6 +29,7 @@ class PeliculasProvider{
   }
 
 
+
   Future<List<Pelicula>> getPopulares() async {
 
     _popularesPages++;
@@ -41,7 +42,12 @@ class PeliculasProvider{
 
     final peliculas = Peliculas.fromJsonList(decodedData['results']);
 
-    return peliculas.items;
+    final resp = peliculas.items;
+
+    _populares.addAll(resp);
+    popularesSink(_populares);
+
+    return resp;
 
   }
 }

@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Peliculas en cines"),
@@ -63,21 +64,24 @@ class HomePage extends StatelessWidget {
 
   Widget _lista(BuildContext context) {
 
+    final peliculasProvider = PeliculasProvider();
+
     final _pageControler = ScrollController();
 
     final _screenSize = MediaQuery.of(context).size;
-
+    
     _pageControler.addListener(() {
-      if(_pageControler.position.pixels >= _pageControler.position.maxScrollExtent - 200) {
+      if(_pageControler.position.pixels >= _pageControler.position.maxScrollExtent ) {
         print('Cargar');
-      //  siguientePagina();
+        peliculasProvider.getPopulares();
       }
     });
 
-    final peliculasProvider = PeliculasProvider();
+    
+    peliculasProvider.getPopulares();
 
-    return FutureBuilder(
-        future: peliculasProvider.getPopulares(),
+    return StreamBuilder(
+        stream: peliculasProvider.popularesStream,
         builder: (BuildContext context, AsyncSnapshot<List<Pelicula>> snapshot) {
           if( snapshot.hasData ) {
 
@@ -85,31 +89,44 @@ class HomePage extends StatelessWidget {
 
             return ListView(
               controller: _pageControler,
+                padding: EdgeInsets.only(top: 5.0),
                 children: peliculas.map( (pelicula) {
              //     print(pelicula.title);
-                  return ListTile(
-                    leading: FadeInImage(
-                      image: NetworkImage( pelicula.getPosterImg() ),
-                      placeholder: AssetImage('assets/loading-48.gif'),
-                      width: 50.0,
-                      fit: BoxFit.contain,
-                    ),
-                    title: Text( pelicula.title ),
-                    trailing: IconButton(
-                      icon: Icon(
-                         Icons.favorite,
-                        color: DBProvider.db.getPeliculaId(pelicula.id) == null ? Colors.red : null,
+                  return Column(
+                    children: [
+                      ListTile(
+                        leading: Hero(
+                          tag: pelicula.id,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(200.0),
+                            child: FadeInImage(
+                              image: NetworkImage( pelicula.getPosterImg() ),
+                              placeholder: AssetImage('assets/loading-48.gif'),
+                              width: 50.0,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        title: Text( pelicula.title ),
+                        trailing: IconButton(
+                          icon: Icon(
+                             Icons.favorite,
+                            color: DBProvider.db.getPeliculaId(pelicula.id) == null ? Colors.red : null,
+                          ),
+                          onPressed: () {
+                            _mostrarAlert(context, pelicula);
+                          },
+                        ),
+                        onTap: (){
+                       //   pelicula.uniqueId = '';
+                          Navigator.pushNamed(context, 'detalle', arguments: pelicula);
+                        },
                       ),
-                      onPressed: () {
-                        _mostrarAlert(context, pelicula);
-                      },
-                    ),
-                    onTap: (){
-                   //   pelicula.uniqueId = '';
-                      Navigator.pushNamed(context, 'detalle', arguments: pelicula);
-                    },
+                      SizedBox(height: 5,),
+                      Divider()
+                    ],
                   );
-                }).toList()
+                }).toList(),
             );
 
           } else {
