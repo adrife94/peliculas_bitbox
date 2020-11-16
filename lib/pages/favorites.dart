@@ -17,6 +17,15 @@ class Favourites extends StatelessWidget {
           return Scaffold(
             appBar: AppBar(
               title: Text("Peliculas favoritas"),
+              actions: [
+                IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    _mostrarAlertBorrar(context);
+                    Navigator.pushNamed(context, 'vista',);
+                  },
+                )
+              ],
             ),
             body: ListView(
               children: peliculas.map( (pelicula) {
@@ -32,10 +41,11 @@ class Favourites extends StatelessWidget {
                   trailing: IconButton(
                     icon: Icon(
                       Icons.favorite,
-                      color: DBProvider.db.getPeliculaId(pelicula.id) == null ? Colors.red : null,
+                      color: DBProvider.db.getPeliculaId(pelicula.id) != null ? Colors.red : null,
+
                     ),
                     onPressed: () {
-                     // _mostrarAlert(context, pelicula);
+                      _mostrarAlert(context, pelicula);
                     },
                   ),
                   onTap: (){
@@ -64,4 +74,78 @@ class Favourites extends StatelessWidget {
       }
     );
   }
+}
+
+void _mostrarAlert(BuildContext context, Pelicula pelicula) {
+  showDialog<void>(
+    context: context,
+    barrierDismissible: true,
+    // false = user must tap button, true = tap outside dialog
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
+        // title: Text('title'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('¿Estas seguro que deseas eliminar \"${pelicula.title}\" de la lista de favoritos?'),
+            FadeInImage(
+                placeholder: AssetImage("assets/loading-48.gif"),
+                image: NetworkImage(pelicula.getPosterImg()))
+          ],
+        ),
+
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Si'),
+            onPressed: () {
+              DBProvider.db.deletePeliculaId(pelicula.id);
+              Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+
+            },
+          ),
+          FlatButton(
+              child: Text('No'),
+              onPressed: () => Navigator.of(dialogContext).pop() // Dismiss alert dialog
+          )
+        ],
+      );
+    },
+  );
+}
+
+void _mostrarAlertBorrar(BuildContext context) {
+  showDialog<void>(
+    context: context,
+    barrierDismissible: true,
+    // false = user must tap button, true = tap outside dialog
+    builder: (BuildContext dialogContext) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder( borderRadius: BorderRadius.circular(20.0)),
+        // title: Text('title'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('¿Estas seguro que deseas eliminar todas las peliculas de tu lista de favoritos?'),
+           Icon(Icons.delete, size: 100,)
+          ],
+        ),
+
+        actions: <Widget>[
+          FlatButton(
+            child: Text('Si'),
+            onPressed: () {
+              DBProvider.db.deleteAll();
+              Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+
+            },
+          ),
+          FlatButton(
+              child: Text('No'),
+              onPressed: () => Navigator.of(dialogContext).pop() // Dismiss alert dialog
+          )
+        ],
+      );
+    },
+  );
 }

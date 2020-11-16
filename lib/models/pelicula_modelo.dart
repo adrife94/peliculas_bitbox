@@ -73,6 +73,21 @@ class Pelicula {
 
   }
 
+  Pelicula.fromJsonMap2( Map<String, dynamic> json ) {
+
+    voteCount        = json['voteCount'];
+    id               = json['id'];
+    video            = json['video'];
+    voteAverage      = json['voteAverage'] / 1;
+    title            = json['title'];
+    posterPath       = json['posterPath'];
+    backdropPath     = json['backdroPath'];
+     overview         = json['overview'];
+    releaseDate      = json['releaseDate'];
+
+
+  }
+
   Pelicula.fromJsonMapId( Map<String, dynamic> json ) {
 
     id               = json['id'];

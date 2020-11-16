@@ -71,7 +71,7 @@ Future<bool> getPeliculaId(int id) async {
     final respuesta = await db.query('Pelicula');
 
 
-    List<Pelicula> list = respuesta.isNotEmpty ? respuesta.map( (peli) => Pelicula.fromJsonMapId(peli)).toList() : [];
+    List<Pelicula> list = respuesta.isNotEmpty ? respuesta.map( (peli) => Pelicula.fromJsonMap2(peli)).toList() : [];
 
 
     return list;
@@ -80,7 +80,7 @@ Future<bool> getPeliculaId(int id) async {
 
 // Eliminar registro
 
-Future<int> deleteScan(int id) async {
+Future<int> deletePeliculaId(int id) async {
   final db = await database;
   final res = await db.delete('Pelicula', where: 'id = ?', whereArgs: [id]);
   return res;
