@@ -119,7 +119,7 @@ class HomePage extends StatelessWidget {
                         trailing: IconButton(
                           icon: Icon(
                              Icons.favorite,
-                            color: DBProvider.db.getPeliculaId(pelicula.id) == null ? Colors.red : null,
+                            color: DBProvider.db.getPeliculaId(pelicula.id) == true ? Colors.red : Colors.blue,
                           ),
                           onPressed: () {
                             _mostrarAlert(context, pelicula);

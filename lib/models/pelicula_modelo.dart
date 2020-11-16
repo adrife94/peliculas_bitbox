@@ -73,6 +73,14 @@ class Pelicula {
 
   }
 
+  Pelicula.fromJsonMapId( Map<String, dynamic> json ) {
+
+    id               = json['id'];
+
+
+
+  }
+
   getPosterImg() {
     if(posterPath != null) {
       return 'https://image.tmdb.org/t/p/w500/$posterPath';

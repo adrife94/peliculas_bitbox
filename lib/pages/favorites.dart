@@ -49,10 +49,10 @@ class Favourites extends StatelessWidget {
 
           )
           );
-        } else {
+    /* } else {
           return Container(
             child: Text("No"),
-          );
+          );*/
          /* return Scaffold(
             appBar: AppBar(
               title: Text("Peliculas no favoritas"),
