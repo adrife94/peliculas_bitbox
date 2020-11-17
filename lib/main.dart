@@ -116,14 +116,19 @@ class HomePage extends StatelessWidget {
                           ),
                         ),
                         title: Text( pelicula.title ),
-                        trailing: IconButton(
-                          icon: Icon(
-                             Icons.favorite,
-                            color: DBProvider.db.getPeliculaId(pelicula.id) == true ? Colors.red : Colors.blue,
-                          ),
-                          onPressed: () {
-                            _mostrarAlert(context, pelicula);
-                          },
+                        trailing: FutureBuilder<Object>(
+                          future: DBProvider.db.getPeliculaId(pelicula.id),
+                          builder: (context, snapshot) {
+                            return IconButton(
+                              icon: Icon(
+                                 Icons.favorite,
+                                color: snapshot == true ? Colors.red : Colors.blue,
+                              ),
+                              onPressed: () {
+                                _mostrarAlert(context, pelicula);
+                              },
+                            );
+                          }
                         ),
                         onTap: (){
                        //   pelicula.uniqueId = '';
