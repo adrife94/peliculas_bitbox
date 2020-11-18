@@ -46,10 +46,16 @@ Future<Database> get database async {
 nuevoPeliculaRaw(Pelicula pelicula) async {
   final db = await database;
 
-  final res = await db.rawInsert("INSERT INTO Pelicula (id, voteCount, voteAverage, title, overview, backdropPath, releaseDate, posterPath) VALUES (${pelicula.id}, ${pelicula.voteCount}, ${pelicula.voteAverage}, '${pelicula.title}', '${pelicula.overview}', '${pelicula.backdropPath}', '${pelicula.releaseDate}', '${pelicula.posterPath}' );");
+  try {
+    final res = await db.rawInsert("INSERT INTO Pelicula (id, voteCount, voteAverage, title, overview, backdropPath, releaseDate, posterPath) VALUES (${pelicula.id}, ${pelicula.voteCount}, ${pelicula.voteAverage}, '${pelicula.title}', '${pelicula.overview}', '${pelicula.backdropPath}', '${pelicula.releaseDate}', '${pelicula.posterPath}' );");
 
-  print("insertado!!!!!!!!!!!!!!!!!!!!!!!!! ${pelicula.id}");
-  return res;
+    print(res.toString());
+    return true;
+  } catch (Exception) {
+
+    return false;
+  }
+
 }
 
 // Obtener informacion

@@ -5,6 +5,8 @@ import 'package:peliculas_bitbox/models/pelicula_modelo.dart';
 class PeliculaDetalle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
+
     final Pelicula pelicula = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
@@ -59,7 +61,7 @@ class PeliculaDetalle extends StatelessWidget {
           tag: pelicula.id,
           child: FadeInImage(
             image: NetworkImage(pelicula.getBackgroundImg()),
-            placeholder: AssetImage("assets/img/loading-48.gif"),
+            placeholder: AssetImage("assets/loading-48.gif"),
             fit: BoxFit.cover,
           ),
         ),

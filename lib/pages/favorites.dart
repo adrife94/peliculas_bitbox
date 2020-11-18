@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:peliculas_bitbox/providers/database.dart';
+
 import 'package:peliculas_bitbox/providers/db_provider.dart';
+import 'package:peliculas_bitbox/providers/peliculas_favoritas.dart';
+import 'package:provider/provider.dart';
 
 
 class Favourites extends StatefulWidget {
@@ -9,13 +11,13 @@ class Favourites extends StatefulWidget {
 }
 
 class _FavouritesState extends State<Favourites> {
+
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
-        future: DBProvider.db.getPeliculas(),
-        builder: (BuildContext context, AsyncSnapshot<List<Pelicula>> snapshot) {
-          if (snapshot.hasData) {
-            final peliculas = snapshot.data;
+
+
+
+    final  listaFavoritos = Provider.of<PeliculasFavoritas>(context);
 
             return Scaffold(
                 appBar: AppBar(
@@ -25,58 +27,17 @@ class _FavouritesState extends State<Favourites> {
                       icon: Icon(Icons.delete),
                       onPressed: () {
                         _mostrarAlertBorrar(context);
-                        Navigator.pushNamed(context, 'vista',);
+                      //  Navigator.pushNamed(context, 'favorita',);
                       },
                     )
                   ],
                 ),
-                body: ListView(
-                    children: peliculas.map( (pelicula) {
-
-                      return ListTile(
-                        leading: FadeInImage(
-                          image: NetworkImage( pelicula.getPosterImg() ),
-                          placeholder: AssetImage('assets/loading-48.gif'),
-                          width: 50.0,
-                          fit: BoxFit.contain,
-                        ),
-                        title: Text( pelicula.title ),
-                        trailing: IconButton(
-                          icon: Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-
-                          ),
-                          onPressed: () {
-                            _mostrarAlert(context, pelicula);
-                          },
-                        ),
-                        onTap: (){
-                          //   pelicula.uniqueId = '';
-                          Navigator.pushNamed(context, 'detalle', arguments: pelicula);
-                        },
-                      );
-                    }
-                    ).toList()
-
-
+                body: Container(
+                  child: _creadorFavoritos(),
                 )
             );
-             } else {
-          return Container(
-            child: Text("No tienes ninguna pelicula en la lista de favoritos"),
-          );
-            /* return Scaffold(
-            appBar: AppBar(
-              title: Text("Peliculas no favoritas"),
-            ),
-            body: Text("Actualmente no tiene peliculas favoritas"),
-          );*/
-          }
-
         }
-    );
-  }
+
   void _mostrarAlert(BuildContext context, Pelicula pelicula) {
     showDialog<void>(
       context: context,
@@ -141,7 +102,15 @@ class _FavouritesState extends State<Favourites> {
               onPressed: () {
                 setState(() {
                   DBProvider.db.deleteAll();
-                  Navigator.of(dialogContext).pop(); // Dismiss alert dialog
+                  Navigator.of(dialogContext).pop();
+              /*    if (peliculas != null) {
+
+
+                  } else {
+                    Scaffold.of(context).showSnackBar(SnackBar(
+                      content: Text("Actualmente no dispone de ninguna pelicula en favoritos"),
+                    ));
+                  }*/
                 });
 
 
@@ -153,6 +122,58 @@ class _FavouritesState extends State<Favourites> {
             )
           ],
         );
+      },
+    );
+  }
+
+
+  Widget _creadorFavoritos() {
+
+    return FutureBuilder(
+
+      future: DBProvider.db.getPeliculas(),
+      builder: (BuildContext context, AsyncSnapshot<List<Pelicula>> snapshot) {
+      if (snapshot.hasData) {
+      final peliculas = snapshot.data;
+          return ListView(
+              children: peliculas.map( (pelicula) {
+
+                return ListTile(
+                  leading: FadeInImage(
+                    image: NetworkImage( pelicula.getPosterImg() ),
+                    placeholder: AssetImage('assets/loading-48.gif'),
+                    width: 50.0,
+                    fit: BoxFit.contain,
+                  ),
+                  title: Text( pelicula.title ),
+                  trailing: IconButton(
+                    icon: Icon(
+                      Icons.favorite,
+                      color: Colors.red,
+
+                    ),
+                    onPressed: () {
+                      _mostrarAlert(context, pelicula);
+                    },
+                  ),
+                  onTap: (){
+                    //   pelicula.uniqueId = '';
+                    Navigator.pushNamed(context, 'detalle', arguments: pelicula);
+                  },
+                );
+              }
+              ).toList()
+
+          );
+        } else {
+          return Container(
+              height: 400.0,
+              child: Center(
+                  child: CircularProgressIndicator()
+              )
+          );
+
+        }
       },
     );
   }

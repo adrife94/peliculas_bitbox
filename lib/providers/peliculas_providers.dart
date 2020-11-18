@@ -28,6 +28,18 @@ class PeliculasProvider{
     _popularesStreamController?.close();
   }
 
+  Future<List<Pelicula>> procesarDatos(Uri url) async {
+
+    final resp = await http.get(url);
+
+    final decodedData = json.decode(resp.body);
+
+    final peliculas = Peliculas.fromJsonList(decodedData['results']);
+    // print(peliculas.items[9].title);
+
+    return peliculas.items;
+  }
+
 
 
   Future<List<Pelicula>> getPopulares() async {
@@ -49,5 +61,11 @@ class PeliculasProvider{
 
     return resp;
 
+  }
+
+  Future<List<Pelicula>> buscarPelicula(String query) async {
+    final url = Uri.https(_url, '3/search/movie', {'api_key' : _apikey, 'language' : _language, 'query' : query});
+
+    return await procesarDatos(url);
   }
 }

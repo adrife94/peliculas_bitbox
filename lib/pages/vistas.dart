@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:peliculas_bitbox/providers/database.dart';
+
 import 'package:peliculas_bitbox/providers/db_provider.dart';
 
 class VistasPage extends StatelessWidget {
