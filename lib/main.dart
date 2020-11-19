@@ -14,22 +14,28 @@ import 'models/pelicula_modelo.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
+
+
+
     return ChangeNotifierProvider(
-   //   create: (context) => PeliculasFavoritas(),
+      create: (context) => PeliculasFavoritas(),
+
       child: MaterialApp(
-       // title: 'Peliculas populares',
-        debugShowCheckedModeBanner: false,
-       home: HomePage(),
-        routes: <String, WidgetBuilder> {
-         // "/" : (context) => HomePage(),
-          "detalle" : (context) => PeliculaDetalle(),
-          "favorita" : (context) => Favourites(),
-          "vista" : (context) => VistasPage()
-        },
-      ),
+            title: 'Peliculas populares',
+            debugShowCheckedModeBanner: false,
+           home: HomePage(),
+            routes: <String, WidgetBuilder> {
+             // "/" : (context) => HomePage(),
+              "detalle" : (context) => PeliculaDetalle(),
+              "favorita" : (context) => Favourites(),
+              "vista" : (context) => VistasPage()
+            },
+          ),
     );
+
   }
 }
 
@@ -43,9 +49,9 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
 
-    final  listaFavoritos = Provider.of<PeliculasFavoritas>(context);
+   /* final  listaFavoritos = Provider.of<PeliculasFavoritas>(context);
 
-    print(listaFavoritos.toString());
+    print(listaFavoritos.toString());*/
 
     return Scaffold(
       appBar: AppBar(
@@ -102,6 +108,11 @@ class _HomePageState extends State<HomePage> {
 
 
     peliculasProvider.getPopulares();
+
+    final  listaFavoritos = Provider.of<PeliculasFavoritas>(context);
+
+   // var data = listaFavoritos.listaPeliculas[0].id;
+   // print(data);
 
     return StreamBuilder(
         stream: peliculasProvider.popularesStream,
@@ -272,6 +283,12 @@ class _HomePageState extends State<HomePage> {
         );
       },
     );
+  }
+
+  Future resultado() async  {
+    final respuesta = await DBProvider.db.getPeliculas();
+
+    print(respuesta);
   }
 }
 

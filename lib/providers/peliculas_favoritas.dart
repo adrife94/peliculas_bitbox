@@ -8,14 +8,21 @@ class PeliculasFavoritas with ChangeNotifier {
   List<Pelicula> _listaPeliculas = [];
 
 
-  PeliculasFavoritas(this._listaPeliculas);
+  PeliculasFavoritas() {
+    cargardatos();
+  }
 
   List<Pelicula> get listaPeliculas => _listaPeliculas;
 
   set listaPeliculas(List<Pelicula> value) {
+    _listaPeliculas = value;
   //  DBProvider.db.getPeliculas().then((value) => _listaPeliculas.add(value);
     notifyListeners();
 
   }
+
+  Future<List<Pelicula>> cargardatos() async {
+  listaPeliculas = await DBProvider.db.getPeliculas();
+}
 
 }
