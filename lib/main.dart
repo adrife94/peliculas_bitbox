@@ -75,11 +75,20 @@ class _HomePageState extends State<HomePage> {
             },
           ),
           IconButton(
+            icon: Icon(Icons.autorenew),
+            onPressed: () {
+             setState(() {
+
+             });
+            },
+          )
+          /*,
+          IconButton(
             icon: Icon(Icons.remove_red_eye_sharp),
             onPressed: () {
               Navigator.pushNamed(context, 'vista',);
             },
-          )
+          )*/
         ],
       ),
       body: Center(
@@ -90,6 +99,7 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+
 
   Widget _lista(BuildContext context) {
 

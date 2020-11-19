@@ -12,12 +12,14 @@ class Favourites extends StatefulWidget {
 
 class _FavouritesState extends State<Favourites> {
 
+
   @override
   Widget build(BuildContext context) {
 
 
 
-    final  listaFavoritos = Provider.of<PeliculasFavoritas>(context);
+   /* final  listaFavoritos = Provider.of<PeliculasFavoritas>(context);
+    listaFavoritos.listaPeliculas;*/
 
             return Scaffold(
                 appBar: AppBar(
@@ -34,7 +36,7 @@ class _FavouritesState extends State<Favourites> {
                 ),
                 body: Container(
                   child: _creadorFavoritos(),
-                )
+                ),
             );
         }
 
