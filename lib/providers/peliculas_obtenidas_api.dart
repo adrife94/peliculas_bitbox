@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:peliculas_bitbox/models/pelicula_modelo.dart';
 import 'package:peliculas_bitbox/providers/db_provider.dart';
 
-class PeliculasFavoritas with ChangeNotifier {
+class PeliculasObtenidasApi with ChangeNotifier {
 
   List<Pelicula> _listaPeliculas = [];
 
@@ -15,15 +15,14 @@ class PeliculasFavoritas with ChangeNotifier {
   List<Pelicula> get listaPeliculas => _listaPeliculas;
 
   set listaPeliculas(List<Pelicula> value) {
-    _listaPeliculas.clear();
-    _listaPeliculas.addAll(value);
-  //  DBProvider.db.getPeliculas().then((value) => _listaPeliculas.add(value);
+    _listaPeliculas = value;
+    //  DBProvider.db.getPeliculas().then((value) => _listaPeliculas.add(value);
     notifyListeners();
 
   }
 
   Future<List<Pelicula>> cargardatos() async {
-  listaPeliculas = await DBProvider.db.getPeliculas();
-}
+    listaPeliculas = await DBProvider.db.getPeliculas();
+  }
 
 }

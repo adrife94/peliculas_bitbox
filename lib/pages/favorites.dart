@@ -104,6 +104,7 @@ class _FavouritesState extends State<Favourites> {
               onPressed: () {
                 setState(() {
                   DBProvider.db.deleteAll();
+                  PeliculasFavoritas();
                   Navigator.of(dialogContext).pop();
               /*    if (peliculas != null) {
 
