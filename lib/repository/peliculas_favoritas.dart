@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'package:peliculas_bitbox/models/pelicula_modelo.dart';
-import 'package:peliculas_bitbox/providers/db_provider.dart';
+
+import 'db_provider.dart';
 
 class PeliculasFavoritas with ChangeNotifier {
 
