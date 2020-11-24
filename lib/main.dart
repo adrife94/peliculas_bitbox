@@ -41,6 +41,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Peliculas Populares"),
@@ -64,23 +65,7 @@ class _HomePageState extends State<HomePage> {
                 'favorita',
               );
             },
-          ),
-          IconButton(
-            icon: Icon(Icons.autorenew),
-            onPressed: () {
-              setState(() {
-               // Provider.of<PeliculasFavoritas>(context);
-                PeliculasFavoritas().listaPeliculas;
-              });
-            },
           )
-          /*,
-          IconButton(
-            icon: Icon(Icons.remove_red_eye_sharp),
-            onPressed: () {
-              Navigator.pushNamed(context, 'vista',);
-            },
-          )*/
         ],
       ),
       body: Center(
@@ -120,14 +105,12 @@ class _HomePageState extends State<HomePage> {
                       controller: _pageControler,
                       padding: EdgeInsets.only(top: 5.0),
                       children: peliculas.map((pelicula) {
-                        //     print(pelicula.title);
                         return Column(
                           children: [
                             ListTile(
                               leading: Hero(
                                 tag: pelicula.id,
                                 child: ClipRRect(
-                                  //  borderRadius: BorderRadius.circular(20.0),
                                   child: FadeInImage(
                                     image:
                                         NetworkImage(pelicula.getPosterImg()),
@@ -139,8 +122,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                               title: Text(pelicula.title),
-                              trailing: _comparatorStreamSQL( context,
-                                  pelicula, listaFavoritos),
+                              trailing: _comparatorStreamSQL( context, pelicula, listaFavoritos),
                               onTap: () {
                                 //   pelicula.uniqueId = '';
                                 Navigator.pushNamed(context, 'detalle',
@@ -161,7 +143,7 @@ class _HomePageState extends State<HomePage> {
         });
   }
 
-  void _mostrarAlert(BuildContext context, Pelicula pelicula) {
+  void _mostrarAlert(BuildContext context, PeliculasFavoritas peliculasFavoritas, Pelicula pelicula) {
     showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -188,7 +170,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 setState(() {
                   DBProvider.db.nuevoPeliculaRaw(pelicula);
-                  PeliculasFavoritas().listaPeliculas;
+                  peliculasFavoritas.updateProvider();
                   Navigator.of(dialogContext).pop();
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text(
@@ -215,7 +197,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void _mostrarAlertParaBorrar(BuildContext context, Pelicula pelicula) {
+  void _mostrarAlertParaBorrar(BuildContext context, PeliculasFavoritas peliculasFavoritas, Pelicula pelicula) {
     showDialog<void>(
       context: context,
       barrierDismissible: true,
@@ -242,6 +224,7 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 setState(() {
                   DBProvider.db.deletePeliculaId(pelicula.id);
+                  peliculasFavoritas.updateProvider();
                   Navigator.of(dialogContext).pop();
                   Scaffold.of(context).showSnackBar(SnackBar(
                     content: Text(
@@ -284,7 +267,7 @@ class _HomePageState extends State<HomePage> {
               color: Colors.red,
             ),
             onPressed: () {
-              _mostrarAlertParaBorrar(context, pelicula);
+              _mostrarAlertParaBorrar(context, listaFavoritos, pelicula);
             },
           );
         }
@@ -297,7 +280,7 @@ class _HomePageState extends State<HomePage> {
         color: Colors.blue,
       ),
       onPressed: () {
-        _mostrarAlert(context, pelicula);
+        _mostrarAlert(context, listaFavoritos, pelicula);
       },
     );
   }

@@ -16,6 +16,7 @@ class PeliculasObtenidasApi with ChangeNotifier {
 
   set listaPeliculas(List<Pelicula> value) {
     _listaPeliculas = value;
+    cargardatos();
     //  DBProvider.db.getPeliculas().then((value) => _listaPeliculas.add(value);
     notifyListeners();
 

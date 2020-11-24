@@ -5,10 +5,10 @@ import 'package:peliculas_bitbox/providers/db_provider.dart';
 
 class PeliculasFavoritas with ChangeNotifier {
 
-  List<Pelicula> _listaPeliculas = [];
+   final List<Pelicula> _listaPeliculas = [];
 
 
-  PeliculasFavoritas() {
+  PeliculasFavoritas() {     // El factory revisa si ya existe una instancia, si existe devuelve la instancia, sino la crea
     cargardatos();
   }
 
@@ -20,6 +20,11 @@ class PeliculasFavoritas with ChangeNotifier {
   //  DBProvider.db.getPeliculas().then((value) => _listaPeliculas.add(value);
     notifyListeners();
 
+  }
+
+  void updateProvider() {
+    cargardatos();
+    notifyListeners();
   }
 
   Future<List<Pelicula>> cargardatos() async {

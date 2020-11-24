@@ -6,20 +6,15 @@ import 'package:provider/provider.dart';
 
 
 class Favourites extends StatefulWidget {
+
   @override
   _FavouritesState createState() => _FavouritesState();
 }
 
 class _FavouritesState extends State<Favourites> {
 
-
   @override
   Widget build(BuildContext context) {
-
-
-
-   /* final  listaFavoritos = Provider.of<PeliculasFavoritas>(context);
-    listaFavoritos.listaPeliculas;*/
 
             return Scaffold(
                 appBar: AppBar(
@@ -65,6 +60,8 @@ class _FavouritesState extends State<Favourites> {
               onPressed: () {
                 setState(() {
                   DBProvider.db.deletePeliculaId(pelicula.id);
+                  final peliculasFavoritas = Provider.of<PeliculasFavoritas>(context, listen: false);
+                  peliculasFavoritas.updateProvider();
                   Navigator.of(dialogContext).pop(); // Dismiss alert dialog
                 }
                 );
@@ -104,7 +101,8 @@ class _FavouritesState extends State<Favourites> {
               onPressed: () {
                 setState(() {
                   DBProvider.db.deleteAll();
-                  PeliculasFavoritas();
+                  final peliculasFavoritas = Provider.of<PeliculasFavoritas>(context, listen: false);
+                  peliculasFavoritas.updateProvider();
                   Navigator.of(dialogContext).pop();
               /*    if (peliculas != null) {
 
