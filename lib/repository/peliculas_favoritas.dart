@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:peliculas_bitbox/models/pelicula_modelo.dart';
+import 'package:peliculas_bitbox/models/movie_model.dart';
 
 import 'db_provider.dart';
 
