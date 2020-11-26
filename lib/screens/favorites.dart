@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'package:peliculas_bitbox/providers/db_provider.dart';
-import 'package:peliculas_bitbox/providers/peliculas_favoritas.dart';
+import 'package:peliculas_bitbox/repository/db_provider.dart';
+import 'package:peliculas_bitbox/repository/peliculas_favoritas.dart';
 import 'package:provider/provider.dart';
 
 

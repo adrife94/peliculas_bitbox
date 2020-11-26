@@ -1,8 +1,8 @@
 import 'dart:io';
 
 import 'package:path/path.dart';
-import 'package:peliculas_bitbox/models/pelicula_modelo.dart';
-export 'package:peliculas_bitbox/models/pelicula_modelo.dart';
+import 'package:peliculas_bitbox/models/movie_model.dart';
+export 'package:peliculas_bitbox/models/movie_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 

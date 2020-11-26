@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:peliculas_bitbox/models/pelicula_modelo.dart';
+import 'package:peliculas_bitbox/models/movie_model.dart';
 
 class PeliculaDetalle extends StatelessWidget {
   @override

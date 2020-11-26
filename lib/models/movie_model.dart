@@ -103,13 +103,9 @@ class Pelicula {
 
   }
 
-  Pelicula.fromJsonMapId( Map<String, dynamic> json ) {
-
-    id               = json['id'];
-
-
-
-  }
+  // Pelicula.fromJsonMapId( Map<String, dynamic> json ) {
+  //   id               = json['id'];
+  // }
 
   getPosterImg() {
     if(posterPath != null) {

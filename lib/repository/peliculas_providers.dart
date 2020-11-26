@@ -1,7 +1,5 @@
 import 'dart:async';
-
-import 'package:flutter/material.dart';
-import 'package:peliculas_bitbox/models/pelicula_modelo.dart';
+import 'package:peliculas_bitbox/models/movie_model.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
@@ -39,8 +37,6 @@ class PeliculasProvider{
 
     return peliculas.items;
   }
-
-
 
   Future<List<Pelicula>> getPopulares() async {
 
